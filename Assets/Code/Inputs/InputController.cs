@@ -1,61 +1,66 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
+    private static InputController _instance;
+    public static InputController Instance => _instance;
+
     private PlayerInputActions playerInputActions;
+    private PlayerInputActions.GameplayActions gameplayInputs;
 
     public Vector2 Move { get; private set; }
+    public bool screenshotPress { get; private set; }
+    public bool screenshotRelease { get; private set; }
+    public bool screenshotHold { get; private set; }
+    public bool UIEnterPress { get; private set; }
+    public bool UIEnterRelease { get; private set; }
+    public bool UIEnterHold { get; private set; }
+    public bool UICancelPress { get; private set; }
+    public bool UICancelRelease { get; private set; }
+    public bool UICancelHold { get; private set; }
 
-    public bool ScreenshotPressed { get; private set; }
-    public bool ScreenshotReleased { get; private set; }
-    public bool ScreenshotHeld { get; private set; }
 
-    public bool UIEnterPressed { get; private set; }
-    public bool UIEnterReleased { get; private set; }
-    public bool UIEnterHeld { get; private set; }
-
-    public bool UICancelPressed { get; private set; }
-    public bool UICancelReleased { get; private set; }
-    public bool UICancelHeld { get; private set; }
-
-    private PlayerInputActions PlayerInputActions
+    private void Awake()
     {
-        get
+        if (_instance != null && _instance != this)
         {
-            if (playerInputActions == null)
-            {
-                playerInputActions = new PlayerInputActions();
-            }
-
-            return playerInputActions;
+            Destroy(gameObject);
+            return;
         }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        playerInputActions = new PlayerInputActions();
+        gameplayInputs = playerInputActions.Gameplay;
     }
+
 
     private void OnEnable()
     {
-        PlayerInputActions.Enable();
+        playerInputActions.Enable();
     }
 
     private void OnDisable()
     {
-        PlayerInputActions.Disable();
+        playerInputActions.Disable();
     }
+
 
     private void Update()
     {
-        Move = PlayerInputActions.Gameplay.Move.ReadValue<Vector2>();
+        Move = gameplayInputs.Move.ReadValue<Vector2>();
 
-        UIEnterPressed = PlayerInputActions.Gameplay.UIEnter.WasPressedThisFrame();
-        UIEnterReleased = PlayerInputActions.Gameplay.UIEnter.WasReleasedThisFrame();
-        UIEnterHeld = PlayerInputActions.Gameplay.UIEnter.IsPressed();
+        screenshotPress = gameplayInputs.Screenshot.WasPressedThisFrame();
+        screenshotRelease = gameplayInputs.Screenshot.WasReleasedThisFrame();
+        screenshotHold = gameplayInputs.Screenshot.IsPressed();
 
-        ScreenshotPressed = PlayerInputActions.Gameplay.Screenshot.WasPressedThisFrame();
-        ScreenshotReleased = PlayerInputActions.Gameplay.Screenshot.WasReleasedThisFrame();
-        ScreenshotHeld = PlayerInputActions.Gameplay.Screenshot.IsPressed();
+        UIEnterPress = gameplayInputs.UIEnter.WasPressedThisFrame();
+        UIEnterRelease = gameplayInputs.UIEnter.WasReleasedThisFrame();
+        UIEnterHold = gameplayInputs.UIEnter.IsPressed();
 
-        UICancelPressed = PlayerInputActions.Gameplay.UICancel.WasPressedThisFrame();
-        UICancelReleased = PlayerInputActions.Gameplay.UICancel.WasReleasedThisFrame();
-        UICancelHeld = PlayerInputActions.Gameplay.UICancel.IsPressed();
+        UICancelPress = gameplayInputs.UICancel.WasPressedThisFrame();
+        UICancelRelease = gameplayInputs.UICancel.WasReleasedThisFrame();
+        UICancelHold = gameplayInputs.UICancel.IsPressed();
     }
 }

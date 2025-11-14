@@ -11,21 +11,35 @@ public struct SoundTrack
 }
 
 
+[RequireComponent(typeof(AudioSource))]
 public class MusicManager : MonoBehaviour
 {
+    private static MusicManager _instance;
+    public static MusicManager Instance => _instance;
+
     [SerializeField] private SoundTrack[] soundTracks;
-    [SerializeField] private AudioSource audioSource;
+    private AudioSource audioSource;
     private string currentlyPlaying = "";
 
 
     private void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        audioSource = GetComponent<AudioSource>();
+
         if (audioSource.clip == null)
         {
             audioSource.volume = 0;
         }
     }
-
 
     public void PlayMusic(string trackName, float fadeDuration = 2f, float musicVolume = -1f)
     {
@@ -47,12 +61,10 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-
     public void StopMusic(float fadeDuration = 2f)
     {
         StartCoroutine(AnimateMusicFadeOut(fadeDuration));
     }
-
 
     private IEnumerator AnimateMusicCrossfade(AudioClip nextTrack, float musicVolume, float fadeDuration)
     {
@@ -66,13 +78,11 @@ public class MusicManager : MonoBehaviour
         yield return StartCoroutine(FadeMusicVolume(0, musicVolume, fadeDuration));
     }
 
-
     private IEnumerator AnimateMusicFadeOut(float fadeDuration)
     {
         yield return StartCoroutine(FadeMusicVolume(audioSource.volume, 0, fadeDuration));
         audioSource.Stop();
     }
-
 
     private IEnumerator FadeMusicVolume(float startVolume, float endVolume, float fadeDuration)
     {
@@ -87,7 +97,6 @@ public class MusicManager : MonoBehaviour
         audioSource.volume = endVolume;
     }
 
-
     private AudioClip GetClipFromName(string name)
     {
         foreach (SoundTrack soundTrack in soundTracks)
@@ -100,7 +109,6 @@ public class MusicManager : MonoBehaviour
 
         return null;
     }
-
 
     private float GetVolumeFromName(string name)
     {

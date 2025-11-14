@@ -2,26 +2,23 @@
 using System.IO;
 using System;
 
+
 public class Screenshot : MonoBehaviour
 {
 #if !UNITY_WEBGL
-    [Header("REFERENCES")]
-    [SerializeField] private InputController inputController;
-
-    [Header("SETTINGS")]
     [SerializeField] private string fileExtension = ".png";
     [SerializeField] private int detailMultiplier = 2;
     private string screenshotsFolder;
 
+
     private void Start()
     {
-        inputController = GameManager.Instance.GetInputController();
         InitializeScreenshotFolderPath();
     }
 
     private void Update()
     {
-        if (inputController.ScreenshotPressed)
+        if (InputController.Instance.screenshotPress)
         {
             TakeScreenshot();
         }

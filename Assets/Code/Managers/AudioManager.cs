@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
+    private static AudioManager _instance;
+    public static AudioManager Instance => _instance;
+
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider MusicVolumeSlider;
     [SerializeField] private Slider AmbientVolumeSlider;
@@ -11,6 +14,18 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private Slider DialogueVolumeSlider;
     [SerializeField] private Slider UIVolumeSlider;
 
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start()
     {
@@ -21,7 +36,6 @@ public class AudioManager : MonoBehaviour
         LoadVolume("UIVolume", UIVolumeSlider);
     }
 
-
     public void OnVolumeSliderChanged()
     {
         ApplyVolume("MusicVolume", MusicVolumeSlider);
@@ -31,14 +45,12 @@ public class AudioManager : MonoBehaviour
         ApplyVolume("UIVolume", UIVolumeSlider);
     }
 
-
     private void LoadVolume(string parameter, Slider slider)
     {
         float value = PlayerPrefs.GetFloat(parameter, 1f);
         slider.value = value;
         audioMixer.SetFloat(parameter, LinearToDecibel(value));
     }
-
 
     private void ApplyVolume(string parameter, Slider slider)
     {
@@ -47,7 +59,6 @@ public class AudioManager : MonoBehaviour
         audioMixer.SetFloat(parameter, LinearToDecibel(value));
         PlayerPrefs.Save();
     }
-
 
     private float LinearToDecibel(float value)
     {

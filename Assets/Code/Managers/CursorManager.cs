@@ -15,7 +15,8 @@ public class CursorAnimation
 
 public class CursorManager : MonoBehaviour
 {
-    public static CursorManager Instance { get; private set; }
+    private static CursorManager _instance;
+    public static CursorManager Instance => _instance;
 
     [SerializeField] private List<CursorAnimation> cursorAnimationList;
     [SerializeField] private CursorType defaultCursorType;
@@ -32,9 +33,17 @@ public class CursorManager : MonoBehaviour
         Talk
     }
 
+
     private void Awake()
     {
-        Instance = this;
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
