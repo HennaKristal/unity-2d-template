@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ public class AudioManager : MonoBehaviour
     private TextMeshProUGUI MusicVolumeSliderText;
     private TextMeshProUGUI AmbientVolumeSliderText;
     private TextMeshProUGUI SFXVolumeSliderText;
-    private TextMeshProUGUI DialogueVolumeText;
+    private TextMeshProUGUI DialogueVolumeSliderText;
     private TextMeshProUGUI UIVolumeSliderText;
     private bool isInitializing = true;
 
@@ -47,16 +48,16 @@ public class AudioManager : MonoBehaviour
         SFXVolumeSliderText = SFXVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
 
         DialogueVolumeSlider = audioPanel.transform.Find("DialogueVolumeSlider").GetComponent<Slider>();
-        DialogueVolumeText = DialogueVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
+        DialogueVolumeSliderText = DialogueVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
 
         UIVolumeSlider = audioPanel.transform.Find("UIVolumeSlider").GetComponent<Slider>();
         UIVolumeSliderText = UIVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
 
-        LoadVolume("MusicVolume", MusicVolumeSlider, MusicVolumeText);
-        LoadVolume("AmbientVolume", AmbientVolumeSlider, AmbientVolumeText);
-        LoadVolume("SFXVolume", SFXVolumeSlider, SFXVolumeText);
-        LoadVolume("DialogueVolume", DialogueVolumeSlider, DialogueVolumeText);
-        LoadVolume("UIVolume", UIVolumeSlider, UIVolumeText);
+        LoadVolume("MusicVolume", MusicVolumeSlider, MusicVolumeSliderText);
+        LoadVolume("AmbientVolume", AmbientVolumeSlider, AmbientVolumeSliderText);
+        LoadVolume("SFXVolume", SFXVolumeSlider, SFXVolumeSliderText);
+        LoadVolume("DialogueVolume", DialogueVolumeSlider, DialogueVolumeSliderText);
+        LoadVolume("UIVolume", UIVolumeSlider, UIVolumeSliderText);
 
         isInitializing = false;
     }
@@ -68,11 +69,11 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        ApplyVolume("MusicVolume", MusicVolumeSlider, MusicVolumeText);
-        ApplyVolume("AmbientVolume", AmbientVolumeSlider, AmbientVolumeText);
-        ApplyVolume("SFXVolume", SFXVolumeSlider, SFXVolumeText);
-        ApplyVolume("DialogueVolume", DialogueVolumeSlider, DialogueVolumeText);
-        ApplyVolume("UIVolume", UIVolumeSlider, UIVolumeText);
+        ApplyVolume("MusicVolume", MusicVolumeSlider, MusicVolumeSliderText);
+        ApplyVolume("AmbientVolume", AmbientVolumeSlider, AmbientVolumeSliderText);
+        ApplyVolume("SFXVolume", SFXVolumeSlider, SFXVolumeSliderText);
+        ApplyVolume("DialogueVolume", DialogueVolumeSlider, DialogueVolumeSliderText);
+        ApplyVolume("UIVolume", UIVolumeSlider, UIVolumeSliderText);
     }
 
     private void LoadVolume(string parameter, Slider slider, TextMeshProUGUI label)
