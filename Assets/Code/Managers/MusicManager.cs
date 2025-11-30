@@ -26,13 +26,14 @@ public class MusicManager : Singleton<MusicManager>
             audioSource.volume = 0f;
     }
 
-    public void Play(string songID, bool? isLooping = null, float fadeDuration = 2f, float songVolume = -1f)
+    public void PlayMusic(string songID, bool? isLooping = null, float fadeDuration = 2f, float songVolume = -1f)
     {
         Song song = GetSongFromID(songID);
 
         if (song == null)
         {
-            Stop(fadeDuration);
+            Debug.Log("here");
+            StopMusic(fadeDuration);
             return;
         }
 
@@ -47,7 +48,12 @@ public class MusicManager : Singleton<MusicManager>
         ));
     }
 
-    public void Stop(float fadeDuration = 2f)
+    public void PlayAmbiance(string songID, bool? isLooping = null, float fadeDuration = 2f, float songVolume = -1f)
+    {
+
+    }
+
+    public void StopMusic(float fadeDuration = 2f)
     {
         StartCoroutine(FadeMusic(
             newClip: null,
@@ -57,11 +63,20 @@ public class MusicManager : Singleton<MusicManager>
         ));
     }
 
+    public void StopAmbiance(float fadeDuration = 2f)
+    {
+
+    }
+
     private IEnumerator FadeMusic(AudioClip newClip, bool isLooping, float targetVolume, float fadeDuration)
     {
         // Fade out current music
-        yield return FadeVolume(audioSource.volume, 0f, fadeDuration);
-        audioSource.Stop();
+        if (audioSource.clip != null && audioSource.volume != 0f)
+        {
+            yield return FadeVolume(audioSource.volume, 0f, fadeDuration);
+            audioSource.clip = null;
+            audioSource.Stop();
+        }
 
         // Fade in new music
         if (newClip != null)

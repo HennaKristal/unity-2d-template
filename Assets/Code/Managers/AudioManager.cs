@@ -1,93 +1,121 @@
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.UI;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] private AudioMixer audioMixer;
-    private Slider MusicVolumeSlider;
-    private Slider AmbientVolumeSlider;
-    private Slider SFXVolumeSlider;
-    private Slider DialogueVolumeSlider;
-    private Slider UIVolumeSlider;
-    private TextMeshProUGUI MusicVolumeSliderText;
-    private TextMeshProUGUI AmbientVolumeSliderText;
-    private TextMeshProUGUI SFXVolumeSliderText;
-    private TextMeshProUGUI DialogueVolumeSliderText;
-    private TextMeshProUGUI UIVolumeSliderText;
-    private bool isInitializing = true;
+    [Header("Audio Source Containers")]
+    [SerializeField] private Transform UIContainer;
+    [SerializeField] private Transform SFXContainer;
+    [SerializeField] private Transform dialogueContainer;
+    private readonly List<AudioSource> UIAudioPool = new List<AudioSource>();
+    private readonly List<AudioSource> SFXAudioPool = new List<AudioSource>();
+    private readonly List<AudioSource> dialogueAudioPool = new List<AudioSource>();
+
+    [Header("Timing Settings")]
+    [SerializeField] private float repeatThreshold = 0.1f;
+    private readonly Dictionary<AudioClip, float> lastPlayTime = new Dictionary<AudioClip, float>();
 
     protected override void Awake()
     {
         base.Awake();
+        InitializePool(UIContainer, UIAudioPool);
+        InitializePool(SFXContainer, SFXAudioPool);
+        InitializePool(dialogueContainer, dialogueAudioPool);
     }
 
-    private void Start()
+    private void InitializePool(Transform container, List<AudioSource> pool)
     {
-        GameObject audioPanel = GameObject.Find("AudioOptions");
-
-        MusicVolumeSlider = audioPanel.transform.Find("MusicVolumeSlider").GetComponent<Slider>();
-        MusicVolumeSliderText = MusicVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
-
-        AmbientVolumeSlider = audioPanel.transform.Find("AmbientVolumeSlider").GetComponent<Slider>();
-        AmbientVolumeSliderText = AmbientVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
-
-        SFXVolumeSlider = audioPanel.transform.Find("SFXVolumeSlider").GetComponent<Slider>();
-        SFXVolumeSliderText = SFXVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
-
-        DialogueVolumeSlider = audioPanel.transform.Find("DialogueVolumeSlider").GetComponent<Slider>();
-        DialogueVolumeSliderText = DialogueVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
-
-        UIVolumeSlider = audioPanel.transform.Find("UIVolumeSlider").GetComponent<Slider>();
-        UIVolumeSliderText = UIVolumeSlider.transform.Find("ValueLabel").GetComponent<TextMeshProUGUI>();
-
-        LoadVolume("MusicVolume", MusicVolumeSlider, MusicVolumeSliderText);
-        LoadVolume("AmbientVolume", AmbientVolumeSlider, AmbientVolumeSliderText);
-        LoadVolume("SFXVolume", SFXVolumeSlider, SFXVolumeSliderText);
-        LoadVolume("DialogueVolume", DialogueVolumeSlider, DialogueVolumeSliderText);
-        LoadVolume("UIVolume", UIVolumeSlider, UIVolumeSliderText);
-
-        isInitializing = false;
-    }
-
-    public void OnVolumeSliderChanged()
-    {
-        if (isInitializing)
+        foreach (Transform child in container)
         {
+            AudioSource source = child.GetComponent<AudioSource>();
+            pool?.Add(source);
+        }
+    }
+
+    public void PlayUISound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
+    {
+        PlayFromPool(clip, UIAudioPool, UIContainer, volume, pitch, delay, spatialBlend, loop);
+    }
+
+    public void PlaySFXSound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
+    {
+        PlayFromPool(clip, SFXAudioPool, SFXContainer, volume, pitch, delay, spatialBlend, loop);
+    }
+
+    public void PlayVoiceLine(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
+    {
+        PlayFromPool(clip, dialogueAudioPool, dialogueContainer, volume, pitch, delay, spatialBlend, loop);
+    }
+
+    private void PlayFromPool(AudioClip clip, List<AudioSource> pool, Transform container, float volume, float pitch, float delay, float spatialBlend, bool loop)
+    {
+        if (clip == null)
             return;
+
+        if (IsClipOnCooldown(clip))
+            return;
+
+        AudioSource source = GetAvailableSource(pool, container);
+        PrepareSource(source, clip, volume, pitch, delay, spatialBlend, loop);
+        PlaySource(source, delay);
+    }
+
+    private bool IsClipOnCooldown(AudioClip clip)
+    {
+        float currentTime = Time.time;
+
+        if (lastPlayTime.TryGetValue(clip, out float lastTime))
+        {
+            if (currentTime - lastTime < repeatThreshold)
+            {
+                return true;
+            }
         }
 
-        ApplyVolume("MusicVolume", MusicVolumeSlider, MusicVolumeSliderText);
-        ApplyVolume("AmbientVolume", AmbientVolumeSlider, AmbientVolumeSliderText);
-        ApplyVolume("SFXVolume", SFXVolumeSlider, SFXVolumeSliderText);
-        ApplyVolume("DialogueVolume", DialogueVolumeSlider, DialogueVolumeSliderText);
-        ApplyVolume("UIVolume", UIVolumeSlider, UIVolumeSliderText);
+        lastPlayTime[clip] = currentTime;
+        return false;
     }
 
-    private void LoadVolume(string parameter, Slider slider, TextMeshProUGUI label)
+    private AudioSource GetAvailableSource(List<AudioSource> pool, Transform container)
     {
-        float value = PlayerPrefs.GetFloat(parameter, 0.8f);
-        slider.value = value;
-        label.text = Mathf.Ceil(value * 100f).ToString() + "%";
-        audioMixer.SetFloat(parameter, LinearToDecibel(value));
+        foreach (AudioSource source in pool)
+        {
+            if (!source.isPlaying)
+            {
+                return source;
+            }
+        }
+
+        AudioSource newSource = CreateNewSource(container);
+        pool.Add(newSource);
+        return newSource;
     }
 
-    private void ApplyVolume(string parameter, Slider slider, TextMeshProUGUI label)
+    private AudioSource CreateNewSource(Transform container)
     {
-        float value = slider.value;
-        label.text = Mathf.Ceil(value * 100f).ToString() + "%";
-        PlayerPrefs.SetFloat(parameter, value);
-        audioMixer.SetFloat(parameter, LinearToDecibel(value));
+        GameObject newObject = new GameObject("Audio Source");
+        newObject.transform.SetParent(container);
+        return newObject.AddComponent<AudioSource>();
     }
 
-    public void SaveAudioSettings()
+    private void PrepareSource(AudioSource source, AudioClip clip, float volume, float pitch, float delay, float spatialBlend, bool loop)
     {
-        PlayerPrefs.Save();
+        source.clip = clip;
+        source.volume = volume;
+        source.pitch = pitch;
+        source.spatialBlend = spatialBlend;
+        source.loop = loop;
     }
 
-    private float LinearToDecibel(float value)
+    private void PlaySource(AudioSource source, float delay)
     {
-        return Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+        if (delay > 0f)
+        {
+            source.PlayDelayed(delay);
+        }
+        else
+        {
+            source.Play();
+        }
     }
 }

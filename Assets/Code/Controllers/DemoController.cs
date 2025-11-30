@@ -2,10 +2,38 @@ using UnityEngine;
 
 public class DemoController : MonoBehaviour
 {
-    public void DemoButtonClick()
+    [SerializeField] private GameObject settingsWindow;
+    [SerializeField] private AudioClip soundEffectClip;
+
+    public void ReloadScene()
     {
-        GameManager.Instance.LoadSceneByName("Game");
+        GameManager.Instance.LoadSceneByName("Demo");
         CursorManager.Instance.SetActiveCursorType(CursorManager.CursorType.Wait);
         CursorManager.Instance.LockCursorType(2f);
+    }
+
+    public void PlayMusicClicked()
+    {
+        MusicManager.Instance.Play("ThemeSong", true, 2f);
+    }
+
+    public void StopMusicClicked()
+    {
+        MusicManager.Instance.Stop(3f);
+    }
+
+    public void OpenSettingsClicked()
+    {
+        settingsWindow.SetActive(true);
+    }
+
+    public void CloseSettingsClicked()
+    {
+        settingsWindow.SetActive(false);
+    }
+
+    public void PlaySoundEffectClicked()
+    {
+        AudioManager.Instance.PlayUISound(soundEffectClip);
     }
 }

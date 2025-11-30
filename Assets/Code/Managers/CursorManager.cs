@@ -17,10 +17,10 @@ public class CursorManager : Singleton<CursorManager>
     [SerializeField] private List<CursorAnimation> cursorAnimationList;
     [SerializeField] private CursorType defaultCursorType;
     private Dictionary<CursorType, CursorAnimation> cursorLookup;
-    private CursorAnimation cursorAnimation;
-    private int currentCursorFrame;
-    private int cursorFrameCount;
-    private float cursorFrameTimer;
+    private CursorAnimation activeAnimation;
+    private int activeFrameIndex;
+    private int frameCount;
+    private float frameTimer;
     private bool isCursorLocked;
     private float cursorLockTimer;
     private CursorType? pendingCursorType;
@@ -36,16 +36,7 @@ public class CursorManager : Singleton<CursorManager>
     protected override void Awake()
     {
         base.Awake();
-
-        // BuildCursorLookup
-        cursorLookup = new Dictionary<CursorType, CursorAnimation>();
-        foreach (CursorAnimation animation in cursorAnimationList)
-        {
-            if (animation != null && animation.textureArray != null && animation.textureArray.Length > 0)
-            {
-                cursorLookup[animation.cursorType] = animation;
-            }
-        }
+        BuildCursorLookup();
     }
 
     private void Start()
@@ -68,15 +59,26 @@ public class CursorManager : Singleton<CursorManager>
         SetDefaultCursor();
     }
 
-    public void SetDefaultCursor()
-    {
-        SetActiveCursorType(defaultCursorType);
-    }
-
     private void Update()
     {
         UpdateCursorLock();
         UpdateCursorAnimation();
+    }
+
+    private void BuildCursorLookup()
+    {
+        cursorLookup = new Dictionary<CursorType, CursorAnimation>();
+
+        foreach (CursorAnimation animation in cursorAnimationList)
+        {
+            if (animation == null)
+                continue;
+
+            if (animation.textureArray == null || animation.textureArray.Length == 0)
+                continue;
+
+            cursorLookup[animation.cursorType] = animation;
+        }
     }
 
     private void UpdateCursorLock()
@@ -93,32 +95,40 @@ public class CursorManager : Singleton<CursorManager>
 
         if (pendingCursorType.HasValue)
         {
-            SetActiveCursorAnimation(GetCursorAnimation(pendingCursorType.Value));
+            ApplyCursorAnimation(GetCursorAnimation(pendingCursorType.Value));
             pendingCursorType = null;
         }
     }
 
     private void UpdateCursorAnimation()
     {
-        if (cursorAnimation == null || cursorAnimation.textureArray == null)
+        if (activeAnimation == null)
             return;
 
-        if (cursorAnimation.textureArray.Length == 0 || cursorAnimation.animationFrameTime <= 0f)
+        if (activeAnimation.textureArray == null || activeAnimation.textureArray.Length == 0)
             return;
 
-        cursorFrameTimer -= Time.deltaTime;
-
-        if (cursorFrameTimer > 0f)
+        if (activeAnimation.animationFrameTime <= 0f)
             return;
 
-        cursorFrameTimer += cursorAnimation.animationFrameTime;
-        currentCursorFrame = (currentCursorFrame + 1) % cursorFrameCount;
+        frameTimer -= Time.deltaTime;
+
+        if (frameTimer > 0f)
+            return;
+
+        frameTimer += activeAnimation.animationFrameTime;
+        activeFrameIndex = (activeFrameIndex + 1) % frameCount;
 
         Cursor.SetCursor(
-            cursorAnimation.textureArray[currentCursorFrame],
-            cursorAnimation.offset,
+            activeAnimation.textureArray[activeFrameIndex],
+            activeAnimation.offset,
             CursorMode.Auto
         );
+    }
+
+    public void SetDefaultCursor()
+    {
+        SetActiveCursorType(defaultCursorType);
     }
 
     public void SetActiveCursorType(CursorType cursorType)
@@ -130,7 +140,39 @@ public class CursorManager : Singleton<CursorManager>
         }
 
         pendingCursorType = null;
-        SetActiveCursorAnimation(GetCursorAnimation(cursorType));
+        ApplyCursorAnimation(GetCursorAnimation(cursorType));
+    }
+
+    private CursorAnimation GetCursorAnimation(CursorType cursorType)
+    {
+        if (cursorLookup.TryGetValue(cursorType, out CursorAnimation animation))
+            return animation;
+
+        return null;
+    }
+
+    private void ApplyCursorAnimation(CursorAnimation animation)
+    {
+        if (animation == null || animation.textureArray == null || animation.textureArray.Length == 0)
+        {
+            activeAnimation = null;
+            currentCursorType = defaultCursorType;
+
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            return;
+        }
+
+        activeAnimation = animation;
+        activeFrameIndex = 0;
+        frameTimer = animation.animationFrameTime;
+        frameCount = animation.textureArray.Length;
+        currentCursorType = animation.cursorType;
+
+        Cursor.SetCursor(
+            animation.textureArray[0],
+            animation.offset,
+            CursorMode.Auto
+        );
     }
 
     public void LockCursorType(float duration)
@@ -145,53 +187,13 @@ public class CursorManager : Singleton<CursorManager>
 
         if (pendingCursorType.HasValue)
         {
-            SetActiveCursorAnimation(GetCursorAnimation(pendingCursorType.Value));
+            ApplyCursorAnimation(GetCursorAnimation(pendingCursorType.Value));
             pendingCursorType = null;
         }
-    }
-
-    private CursorAnimation GetCursorAnimation(CursorType cursorType)
-    {
-        if (cursorLookup.TryGetValue(cursorType, out CursorAnimation animation))
-        {
-            return animation;
-        }
-
-        return null;
-    }
-
-    private void SetActiveCursorAnimation(CursorAnimation newAnimation)
-    {
-        if (newAnimation == null || newAnimation.textureArray == null || newAnimation.textureArray.Length == 0)
-        {
-            cursorAnimation = null;
-            currentCursorType = defaultCursorType;
-
-            Cursor.SetCursor(
-                null,
-                Vector2.zero,
-                CursorMode.Auto
-            );
-
-            return;
-        }
-
-        cursorAnimation = newAnimation;
-        currentCursorFrame = 0;
-        cursorFrameTimer = cursorAnimation.animationFrameTime;
-        cursorFrameCount = cursorAnimation.textureArray.Length;
-        currentCursorType = newAnimation.cursorType;
-
-        Cursor.SetCursor(
-            cursorAnimation.textureArray[currentCursorFrame],
-            cursorAnimation.offset,
-            CursorMode.Auto
-        );
     }
 
     public CursorType GetCurrentCursorType()
     {
         return currentCursorType;
     }
-
 }
