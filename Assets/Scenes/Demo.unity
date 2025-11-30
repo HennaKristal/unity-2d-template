@@ -4566,6 +4566,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120585238}
   m_CullTransparentMesh: 1
+--- !u!82 &1139491171 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5527993538087738848, guid: 3aef271508cc5db42a701d286da09156, type: 3}
+  m_PrefabInstance: {fileID: 1858115782618527074}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1146487650
 GameObject:
   m_ObjectHideFlags: 0
@@ -6246,6 +6251,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1397495381}
   m_CullTransparentMesh: 1
+--- !u!82 &1419673444 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4359245991982331180, guid: 3aef271508cc5db42a701d286da09156, type: 3}
+  m_PrefabInstance: {fileID: 1858115782618527074}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1434502647
 GameObject:
   m_ObjectHideFlags: 0
@@ -8467,6 +8477,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5286238738262865454, guid: 3aef271508cc5db42a701d286da09156, type: 3}
+      propertyPath: musicAudioSource
+      value: 
+      objectReference: {fileID: 1139491171}
+    - target: {fileID: 5286238738262865454, guid: 3aef271508cc5db42a701d286da09156, type: 3}
+      propertyPath: ambianceAudioSource
+      value: 
+      objectReference: {fileID: 1419673444}
+    - target: {fileID: 5286238738262865454, guid: 3aef271508cc5db42a701d286da09156, type: 3}
+      propertyPath: ambianceSoundTrack.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7315249298525565880, guid: 3aef271508cc5db42a701d286da09156, type: 3}
       propertyPath: m_Name
       value: Managers

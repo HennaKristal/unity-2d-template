@@ -8,14 +8,17 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private Transform UIContainer;
     [SerializeField] private Transform SFXContainer;
     [SerializeField] private Transform dialogueContainer;
+    [SerializeField] private Transform ambianceContainer;
     private readonly List<AudioSource> UIAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> SFXAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> dialogueAudioPool = new List<AudioSource>();
+    private readonly List<AudioSource> ambianceAudioPool = new List<AudioSource>();
 
     [Header("Audio Mixer Groups")]
     [SerializeField] private AudioMixerGroup UIMixerGroup;
     [SerializeField] private AudioMixerGroup SFXMixerGroup;
     [SerializeField] private AudioMixerGroup dialogueMixerGroup;
+    [SerializeField] private AudioMixerGroup ambianceMixerGroup;
 
     [Header("Timing Settings")]
     [SerializeField] private float repeatThreshold = 0.1f;
@@ -27,6 +30,7 @@ public class AudioManager : Singleton<AudioManager>
         InitializePool(UIContainer, UIAudioPool);
         InitializePool(SFXContainer, SFXAudioPool);
         InitializePool(dialogueContainer, dialogueAudioPool);
+        InitializePool(ambianceContainer, ambianceAudioPool);
     }
 
     private void InitializePool(Transform container, List<AudioSource> pool)
@@ -37,6 +41,10 @@ public class AudioManager : Singleton<AudioManager>
             pool?.Add(source);
         }
     }
+
+    // -------------------------------------------------------
+    // Public API
+    // -------------------------------------------------------
 
     public void PlayUISound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
     {
@@ -52,6 +60,15 @@ public class AudioManager : Singleton<AudioManager>
     {
         PlayFromPool(clip, dialogueAudioPool, dialogueContainer, dialogueMixerGroup, volume, pitch, delay, spatialBlend, loop);
     }
+
+    public void PlayAmbianceSound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
+    {
+        PlayFromPool(clip, dialogueAudioPool, dialogueContainer, dialogueMixerGroup, volume, pitch, delay, spatialBlend, loop);
+    }
+
+    // -------------------------------------------------------
+    // Core logic
+    // -------------------------------------------------------
 
     private void PlayFromPool(AudioClip clip, List<AudioSource> pool, Transform container, AudioMixerGroup mixerGroup, float volume, float pitch, float delay, float spatialBlend, bool loop)
     {
