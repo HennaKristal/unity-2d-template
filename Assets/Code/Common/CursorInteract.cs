@@ -12,7 +12,7 @@ public class CursorInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void OnMouseExit()
     {
-        CursorManager.Instance.SetDefaultCursorType();
+        CursorManager.Instance.SetDefaultCursor();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -22,6 +22,6 @@ public class CursorInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        CursorManager.Instance.SetDefaultCursorType();
+        CursorManager.Instance.SetDefaultCursor();
     }
 }

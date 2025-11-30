@@ -1191,8 +1191,8 @@ MonoBehaviour:
     name=xy>   <sprite name=r>   Reset Level\n<sprite name=xmenu>   <sprite name=esc>  
     Pause / view subtitles\n\n<size=+20><sprite name=nx> </size> Large button"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a8e7af332c263bd4eaddddceb1eae149, type: 2}
-  m_sharedMaterial: {fileID: 1367066848624020431, guid: a8e7af332c263bd4eaddddceb1eae149, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 05a6c5e052a943c4784a3dd4e256c3fb, type: 2}
+  m_sharedMaterial: {fileID: 3848991094717567634, guid: 05a6c5e052a943c4784a3dd4e256c3fb, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
