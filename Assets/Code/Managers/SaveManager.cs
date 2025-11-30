@@ -1,23 +1,11 @@
 using UnityEngine;
 
-public class SaveManager : MonoBehaviour
+public class SaveManager : Singleton<SaveManager>
 {
-    private static SaveManager _instance;
-    public static SaveManager Instance => _instance;
-
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        base.Awake();
     }
-
 
     public void SaveData()
     {

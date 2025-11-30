@@ -2,38 +2,23 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    private static GameManager _instance;
-    public static GameManager Instance => _instance;
     private Fading fading;
     private Coroutine sceneRoutine;
 
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        base.Awake();
 
         fading = GetComponent<Fading>();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-
     private void OnDestroy()
     {
-        if (_instance == this)
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
 
     public void ExitApplication()
     {
@@ -44,7 +29,6 @@ public class GameManager : MonoBehaviour
     {
         Application.OpenURL(url);
     }
-
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

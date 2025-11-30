@@ -3,11 +3,8 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    private static AudioManager _instance;
-    public static AudioManager Instance => _instance;
-
     [SerializeField] private AudioMixer audioMixer;
     private Slider MusicVolumeSlider;
     private Slider AmbientVolumeSlider;
@@ -21,17 +18,9 @@ public class AudioManager : MonoBehaviour
     private TextMeshProUGUI UIVolumeSliderText;
     private bool isInitializing = true;
 
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        base.Awake();
     }
 
     private void Start()

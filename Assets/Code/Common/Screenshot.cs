@@ -18,7 +18,7 @@ public class Screenshot : MonoBehaviour
 
     private void Update()
     {
-        if (InputController.Instance.screenshotPress)
+        if (InputManager.Instance.screenshotPress)
         {
             TakeScreenshot();
         }

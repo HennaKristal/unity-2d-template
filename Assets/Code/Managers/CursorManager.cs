@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
 [Serializable]
 public class CursorAnimation
 {
@@ -12,15 +11,12 @@ public class CursorAnimation
     public Vector2 offset;
 }
 
-
-public class CursorManager : MonoBehaviour
+public class CursorManager : Singleton<CursorManager>
 {
-    private static CursorManager _instance;
-    public static CursorManager Instance => _instance;
-
     [SerializeField] private List<CursorAnimation> cursorAnimationList;
     [SerializeField] private CursorType defaultCursorType;
 
+    private Dictionary<CursorType, CursorAnimation> cursorLookup;
     private CursorAnimation cursorAnimation;
     private int currentCursorFrame;
     private int cursorFrameCount;
@@ -30,20 +26,13 @@ public class CursorManager : MonoBehaviour
     {
         Pointer,
         Combat,
-        Talk
+        Wait
     }
 
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        base.Awake();
+        BuildCursorLookup();
     }
 
     private void Start()
@@ -53,19 +42,28 @@ public class CursorManager : MonoBehaviour
 
     private void Update()
     {
-        if (cursorAnimation != null && cursorAnimation.textureArray != null && cursorAnimation.textureArray.Length > 0 && cursorAnimation.animationFrameTime > 0f)
+        if (cursorAnimation == null || cursorAnimation.textureArray == null)
+            return;
+
+        if (cursorAnimation.textureArray.Length == 0 || cursorAnimation.animationFrameTime <= 0f)
+            return;
+
+        cursorFrameTimer -= Time.deltaTime;
+
+        if (cursorFrameTimer <= 0f)
         {
-            cursorFrameTimer -= Time.deltaTime;
-            if (cursorFrameTimer <= 0f)
-            {
-                cursorFrameTimer += cursorAnimation.animationFrameTime;
-                currentCursorFrame = (currentCursorFrame + 1) % cursorFrameCount;
-                Cursor.SetCursor(cursorAnimation.textureArray[currentCursorFrame], cursorAnimation.offset, CursorMode.Auto);
-            }
+            cursorFrameTimer += cursorAnimation.animationFrameTime;
+            currentCursorFrame = (currentCursorFrame + 1) % cursorFrameCount;
+
+            Cursor.SetCursor(
+                cursorAnimation.textureArray[currentCursorFrame],
+                cursorAnimation.offset,
+                CursorMode.Auto
+            );
         }
     }
 
-    public void SetAciveCursorType(CursorType cursorType)
+    public void SetActiveCursorType(CursorType cursorType)
     {
         SetActiveCursorAnimation(GetCursorAnimation(cursorType));
     }
@@ -75,14 +73,24 @@ public class CursorManager : MonoBehaviour
         SetActiveCursorAnimation(GetCursorAnimation(defaultCursorType));
     }
 
+    private void BuildCursorLookup()
+    {
+        cursorLookup = new Dictionary<CursorType, CursorAnimation>();
+
+        foreach (CursorAnimation animation in cursorAnimationList)
+        {
+            if (animation != null && animation.textureArray != null && animation.textureArray.Length > 0)
+            {
+                cursorLookup[animation.cursorType] = animation;
+            }
+        }
+    }
+
     private CursorAnimation GetCursorAnimation(CursorType cursorType)
     {
-        foreach (CursorAnimation anim in cursorAnimationList)
+        if (cursorLookup.TryGetValue(cursorType, out CursorAnimation animation))
         {
-            if (anim != null && anim.cursorType == cursorType)
-            {
-                return anim;
-            }
+            return animation;
         }
 
         return null;
@@ -101,6 +109,11 @@ public class CursorManager : MonoBehaviour
         currentCursorFrame = 0;
         cursorFrameTimer = cursorAnimation.animationFrameTime;
         cursorFrameCount = cursorAnimation.textureArray.Length;
-        Cursor.SetCursor(cursorAnimation.textureArray[currentCursorFrame], cursorAnimation.offset, CursorMode.Auto);
+
+        Cursor.SetCursor(
+            cursorAnimation.textureArray[currentCursorFrame],
+            cursorAnimation.offset,
+            CursorMode.Auto
+        );
     }
 }
