@@ -14,12 +14,12 @@ public class DemoController : MonoBehaviour
 
     public void PlayMusicClicked()
     {
-        MusicManager.Instance.Play("ThemeSong", true, 2f);
+        MusicManager.Instance.PlayMusic("ThemeSong", true, 2f);
     }
 
     public void StopMusicClicked()
     {
-        MusicManager.Instance.Stop(3f);
+        MusicManager.Instance.StopMusic(3f);
     }
 
     public void OpenSettingsClicked()

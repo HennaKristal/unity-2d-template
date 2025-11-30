@@ -1350,8 +1350,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2357319260009171769}
-  - {fileID: 3105901213583358857}
   - {fileID: 7590471567906758861}
+  - {fileID: 3105901213583358857}
   m_Father: {fileID: 8773942806121629953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7046483319052104590
@@ -1367,8 +1367,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   UIContainer: {fileID: 2357319260009171769}
-  SFXContainer: {fileID: 3105901213583358857}
-  dialogueContainer: {fileID: 7590471567906758861}
+  SFXContainer: {fileID: 7590471567906758861}
+  dialogueContainer: {fileID: 3105901213583358857}
+  UIMixerGroup: {fileID: -7405878955680619439, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
+  SFXMixerGroup: {fileID: 4030100643516294267, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
+  dialogueMixerGroup: {fileID: 5638899915642102433, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
   repeatThreshold: 0.1
 --- !u!1 &5059845392330324778
 GameObject:

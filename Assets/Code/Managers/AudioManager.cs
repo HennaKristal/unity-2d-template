@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : Singleton<AudioManager>
 {
@@ -10,6 +11,11 @@ public class AudioManager : Singleton<AudioManager>
     private readonly List<AudioSource> UIAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> SFXAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> dialogueAudioPool = new List<AudioSource>();
+
+    [Header("Audio Mixer Groups")]
+    [SerializeField] private AudioMixerGroup UIMixerGroup;
+    [SerializeField] private AudioMixerGroup SFXMixerGroup;
+    [SerializeField] private AudioMixerGroup dialogueMixerGroup;
 
     [Header("Timing Settings")]
     [SerializeField] private float repeatThreshold = 0.1f;
@@ -34,20 +40,20 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlayUISound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
     {
-        PlayFromPool(clip, UIAudioPool, UIContainer, volume, pitch, delay, spatialBlend, loop);
+        PlayFromPool(clip, UIAudioPool, UIContainer, UIMixerGroup, volume, pitch, delay, spatialBlend, loop);
     }
 
     public void PlaySFXSound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
     {
-        PlayFromPool(clip, SFXAudioPool, SFXContainer, volume, pitch, delay, spatialBlend, loop);
+        PlayFromPool(clip, SFXAudioPool, SFXContainer, SFXMixerGroup, volume, pitch, delay, spatialBlend, loop);
     }
 
     public void PlayVoiceLine(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
     {
-        PlayFromPool(clip, dialogueAudioPool, dialogueContainer, volume, pitch, delay, spatialBlend, loop);
+        PlayFromPool(clip, dialogueAudioPool, dialogueContainer, dialogueMixerGroup, volume, pitch, delay, spatialBlend, loop);
     }
 
-    private void PlayFromPool(AudioClip clip, List<AudioSource> pool, Transform container, float volume, float pitch, float delay, float spatialBlend, bool loop)
+    private void PlayFromPool(AudioClip clip, List<AudioSource> pool, Transform container, AudioMixerGroup mixerGroup, float volume, float pitch, float delay, float spatialBlend, bool loop)
     {
         if (clip == null)
             return;
@@ -55,8 +61,8 @@ public class AudioManager : Singleton<AudioManager>
         if (IsClipOnCooldown(clip))
             return;
 
-        AudioSource source = GetAvailableSource(pool, container);
-        PrepareSource(source, clip, volume, pitch, delay, spatialBlend, loop);
+        AudioSource source = GetAvailableSource(pool, container, mixerGroup);
+        PrepareSource(source, clip, volume, pitch, spatialBlend, loop);
         PlaySource(source, delay);
     }
 
@@ -76,7 +82,7 @@ public class AudioManager : Singleton<AudioManager>
         return false;
     }
 
-    private AudioSource GetAvailableSource(List<AudioSource> pool, Transform container)
+    private AudioSource GetAvailableSource(List<AudioSource> pool, Transform container, AudioMixerGroup mixerGroup)
     {
         foreach (AudioSource source in pool)
         {
@@ -86,19 +92,22 @@ public class AudioManager : Singleton<AudioManager>
             }
         }
 
-        AudioSource newSource = CreateNewSource(container);
+        AudioSource newSource = CreateNewSource(container, mixerGroup);
         pool.Add(newSource);
         return newSource;
     }
 
-    private AudioSource CreateNewSource(Transform container)
+    private AudioSource CreateNewSource(Transform container, AudioMixerGroup mixerGroup)
     {
         GameObject newObject = new GameObject("Audio Source");
         newObject.transform.SetParent(container);
-        return newObject.AddComponent<AudioSource>();
+
+        AudioSource source = newObject.AddComponent<AudioSource>();
+        source.outputAudioMixerGroup = mixerGroup;
+        return source;
     }
 
-    private void PrepareSource(AudioSource source, AudioClip clip, float volume, float pitch, float delay, float spatialBlend, bool loop)
+    private void PrepareSource(AudioSource source, AudioClip clip, float volume, float pitch, float spatialBlend, bool loop)
     {
         source.clip = clip;
         source.volume = volume;

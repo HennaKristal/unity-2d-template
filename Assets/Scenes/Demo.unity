@@ -8467,29 +8467,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2216933193123559780, guid: 3aef271508cc5db42a701d286da09156, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4798639775319377286, guid: 3aef271508cc5db42a701d286da09156, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6713563475761539107, guid: 3aef271508cc5db42a701d286da09156, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7046483319052104590, guid: 3aef271508cc5db42a701d286da09156, type: 3}
-      propertyPath: repeatThreshold
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 7315249298525565880, guid: 3aef271508cc5db42a701d286da09156, type: 3}
       propertyPath: m_Name
       value: Managers
-      objectReference: {fileID: 0}
-    - target: {fileID: 7656693572128222273, guid: 3aef271508cc5db42a701d286da09156, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8773942806121629953, guid: 3aef271508cc5db42a701d286da09156, type: 3}
       propertyPath: m_LocalPosition.x
