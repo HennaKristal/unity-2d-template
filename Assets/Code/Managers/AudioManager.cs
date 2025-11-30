@@ -8,17 +8,17 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private Transform UIContainer;
     [SerializeField] private Transform SFXContainer;
     [SerializeField] private Transform dialogueContainer;
-    [SerializeField] private Transform ambianceContainer;
+    [SerializeField] private Transform ambienceContainer;
     private readonly List<AudioSource> UIAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> SFXAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> dialogueAudioPool = new List<AudioSource>();
-    private readonly List<AudioSource> ambianceAudioPool = new List<AudioSource>();
+    private readonly List<AudioSource> ambienceAudioPool = new List<AudioSource>();
 
     [Header("Audio Mixer Groups")]
     [SerializeField] private AudioMixerGroup UIMixerGroup;
     [SerializeField] private AudioMixerGroup SFXMixerGroup;
     [SerializeField] private AudioMixerGroup dialogueMixerGroup;
-    [SerializeField] private AudioMixerGroup ambianceMixerGroup;
+    [SerializeField] private AudioMixerGroup ambienceMixerGroup;
 
     [Header("Timing Settings")]
     [SerializeField] private float repeatThreshold = 0.1f;
@@ -30,7 +30,7 @@ public class AudioManager : Singleton<AudioManager>
         InitializePool(UIContainer, UIAudioPool);
         InitializePool(SFXContainer, SFXAudioPool);
         InitializePool(dialogueContainer, dialogueAudioPool);
-        InitializePool(ambianceContainer, ambianceAudioPool);
+        InitializePool(ambienceContainer, ambienceAudioPool);
     }
 
     private void InitializePool(Transform container, List<AudioSource> pool)
@@ -61,7 +61,7 @@ public class AudioManager : Singleton<AudioManager>
         PlayFromPool(clip, dialogueAudioPool, dialogueContainer, dialogueMixerGroup, volume, pitch, delay, spatialBlend, loop);
     }
 
-    public void PlayAmbianceSound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
+    public void PlayAmbienceSound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f, float spatialBlend = 0f, bool loop = false)
     {
         PlayFromPool(clip, dialogueAudioPool, dialogueContainer, dialogueMixerGroup, volume, pitch, delay, spatialBlend, loop);
     }

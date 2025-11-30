@@ -1886,11 +1886,11 @@ MonoBehaviour:
   UIContainer: {fileID: 2357319260009171769}
   SFXContainer: {fileID: 7590471567906758861}
   dialogueContainer: {fileID: 3105901213583358857}
-  ambianceContainer: {fileID: 5605433385248027575}
+  ambienceContainer: {fileID: 5605433385248027575}
   UIMixerGroup: {fileID: -7405878955680619439, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
   SFXMixerGroup: {fileID: 4030100643516294267, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
   dialogueMixerGroup: {fileID: 5638899915642102433, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
-  ambianceMixerGroup: {fileID: -1655243430873365593, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
+  ambienceMixerGroup: {fileID: -1655243430873365593, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
   repeatThreshold: 0.1
 --- !u!1 &5059845392330324778
 GameObject:
@@ -2032,7 +2032,7 @@ GameObject:
   - component: {fileID: 940027867307428545}
   - component: {fileID: 4359245991982331180}
   m_Layer: 0
-  m_Name: Ambiance Audio Source
+  m_Name: Ambience Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2197,13 +2197,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
   musicAudioSource: {fileID: 5527993538087738848}
-  ambianceAudioSource: {fileID: 4359245991982331180}
+  ambienceAudioSource: {fileID: 4359245991982331180}
   soundtrack:
   - songID: ThemeSong
     audioClip: {fileID: 8300000, guid: 2d5d0a52bd6842f4a9a44a6f50c3a711, type: 3}
     isLooping: 1
     volume: 1
-  ambianceSoundTrack: []
+  ambienceSoundTrack: []
 --- !u!1 &5475113620187780073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2214,7 +2214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5605433385248027575}
   m_Layer: 0
-  m_Name: Ambiance Audio Sources
+  m_Name: Ambience Audio Sources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

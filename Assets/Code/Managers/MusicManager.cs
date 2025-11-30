@@ -14,11 +14,11 @@ public class MusicManager : Singleton<MusicManager>
 {
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicAudioSource;
-    [SerializeField] private AudioSource ambianceAudioSource;
+    [SerializeField] private AudioSource ambienceAudioSource;
 
     [Header("Soundtracks")]
     [SerializeField] private Song[] soundtrack;
-    [SerializeField] private Song[] ambianceSoundTrack;
+    [SerializeField] private Song[] ambienceSoundTrack;
 
     protected override void Awake()
     {
@@ -28,8 +28,8 @@ public class MusicManager : Singleton<MusicManager>
         if (musicAudioSource.clip == null)
             musicAudioSource.volume = 0f;
 
-        if (ambianceAudioSource.clip == null)
-            ambianceAudioSource.volume = 0f;
+        if (ambienceAudioSource.clip == null)
+            ambienceAudioSource.volume = 0f;
     }
 
     // -------------------------------------------------------
@@ -69,13 +69,13 @@ public class MusicManager : Singleton<MusicManager>
         ));
     }
 
-    public void PlayAmbiance(string songID, bool? isLooping = null, float fadeDuration = 2f, float songVolume = -1f)
+    public void PlayAmbience(string songID, bool? isLooping = null, float fadeDuration = 2f, float songVolume = -1f)
     {
-        Song song = GetSongFromID(songID, ambianceSoundTrack);
+        Song song = GetSongFromID(songID, ambienceSoundTrack);
 
         if (song == null)
         {
-            StopAmbiance(fadeDuration);
+            StopAmbience(fadeDuration);
             return;
         }
 
@@ -83,7 +83,7 @@ public class MusicManager : Singleton<MusicManager>
         float volumeValue = (songVolume < 0f) ? song.volume : songVolume;
 
         StartCoroutine(FadeAudio(
-            audioSource: ambianceAudioSource,
+            audioSource: ambienceAudioSource,
             newClip: song.audioClip,
             isLooping: loopValue,
             targetVolume: volumeValue,
@@ -91,10 +91,10 @@ public class MusicManager : Singleton<MusicManager>
         ));
     }
 
-    public void StopAmbiance(float fadeDuration = 2f)
+    public void StopAmbience(float fadeDuration = 2f)
     {
         StartCoroutine(FadeAudio(
-            audioSource: ambianceAudioSource,
+            audioSource: ambienceAudioSource,
             newClip: null,
             isLooping: false,
             targetVolume: 0f,
