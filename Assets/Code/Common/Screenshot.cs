@@ -8,6 +8,7 @@ public class Screenshot : MonoBehaviour
 #if !UNITY_WEBGL
     [SerializeField] private string fileExtension = ".png";
     [SerializeField] private int detailMultiplier = 2;
+    [SerializeField] private AudioClip screenshotAudioClip;
     private string screenshotsFolder;
 
 
@@ -63,6 +64,7 @@ public class Screenshot : MonoBehaviour
             string fullPath = GetUniqueFilePath("Screenshot_" + System.DateTime.Now.ToString("yyyy-MM-dd_HHmmss"));
             ScreenCapture.CaptureScreenshot(fullPath, detailMultiplier);
             Debug.Log("Screenshot saved: " + fullPath);
+            AudioManager.Instance.PlayUISound(screenshotAudioClip);
         }
         catch (Exception e)
         {

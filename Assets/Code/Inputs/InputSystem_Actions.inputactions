@@ -57,6 +57,17 @@
                 },
                 {
                     "name": "",
+                    "id": "dd9aab70-bdbd-49a3-b9ff-d1cfccc99de6",
+                    "path": "<Keyboard>/f12",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Screenshot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "76aee44a-6171-4bc0-b9ec-147254912c3d",
                     "path": "<Gamepad>/select",
                     "interactions": "",
