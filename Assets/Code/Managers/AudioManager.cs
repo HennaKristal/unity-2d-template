@@ -9,10 +9,12 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private Transform SFXContainer;
     [SerializeField] private Transform dialogueContainer;
     [SerializeField] private Transform ambienceContainer;
+    [SerializeField] private Transform customContainer;
     private readonly List<AudioSource> UIAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> SFXAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> dialogueAudioPool = new List<AudioSource>();
     private readonly List<AudioSource> ambienceAudioPool = new List<AudioSource>();
+    private readonly Dictionary<string, AudioSource> persistentSources = new Dictionary<string, AudioSource>();
 
     [Header("Audio Mixer Groups")]
     [SerializeField] private AudioMixerGroup UIMixerGroup;
@@ -143,5 +145,45 @@ public class AudioManager : Singleton<AudioManager>
         {
             source.Play();
         }
+    }
+
+    // -------------------------------------------------------
+    // Custom Persistent Audio Sources
+    // -------------------------------------------------------
+
+    public AudioSource CreatePersistentAudioSource(string identifier, AudioMixerGroup mixerGroup, AudioClip clip)
+    {
+        if (string.IsNullOrWhiteSpace(identifier))
+            return null;
+
+        if (persistentSources.ContainsKey(identifier))
+            return persistentSources[identifier];
+
+        GameObject newObject = new GameObject("Audio Source (" + identifier + ")");
+        newObject.transform.SetParent(customContainer);
+
+        AudioSource source = newObject.AddComponent<AudioSource>();
+        source.outputAudioMixerGroup = mixerGroup;
+        source.clip = clip;
+
+        persistentSources.Add(identifier, source);
+        return source;
+    }
+
+    public AudioSource GetPersistentAudioSource(string identifier)
+    {
+        if (!persistentSources.TryGetValue(identifier, out AudioSource source))
+            return null;
+
+        return source;
+    }
+
+    public void DeletePersistentAudioSource(string identifier)
+    {
+        if (!persistentSources.TryGetValue(identifier, out AudioSource source))
+            return;
+
+        persistentSources.Remove(identifier);
+        Destroy(source.gameObject);
     }
 }
