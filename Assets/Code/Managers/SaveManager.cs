@@ -1,34 +1,117 @@
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SaveManager : Singleton<SaveManager>
+
+// Example Usage inside PlayerController
+/*
+public void Save(ref PlayerSaveData data)
 {
-    protected override void Awake()
+    data.playerPosition = transform.position;
+}
+
+public void Save(PlayerSaveData data)
+{
+    transform.position = data.playerPosition;
+}
+
+public struct PlayerSaveData
+{
+    public Vector3 playerPosition;
+}
+*/
+
+
+public class SaveManager
+{
+    private static SaveData saveData = new SaveData();
+    private static bool encryptData = false;
+
+
+    public struct SaveData
     {
-        base.Awake();
+        public string lastSceneName;
+        //public PlayerSaveData playerSaveData;
+        //public PlayerUpgradeSaveData playerUpgradeSaveData;
     }
 
-    public void SaveData()
+    public static string SaveFileName(int slotIndex)
     {
-        PlayerPrefs.SetInt("saveFileFound", 1);
+        string directory = Application.persistentDataPath + "/save/";
+
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        string saveFile = directory + "slot_" + slotIndex + ".save";
+        return saveFile;
     }
 
-    public void LoadData()
+    public static void Save(int slotIndex)
     {
-        int saveFileFound = PlayerPrefs.GetInt("saveFileFound", 0);
+        HandleSaveData();
+
+        string json = JsonUtility.ToJson(saveData, true);
+
+        if (encryptData)
+        {
+            json = EncryptionUtility.EncryptString(json);
+        }
+
+        File.WriteAllText(SaveFileName(slotIndex), json);
     }
 
-    public void ResetData()
+    private static void HandleSaveData()
     {
-        PlayerPrefs.SetInt("saveFileFound", 0);
+        // GameManager.Instance.Player.Save(ref _saveData.PlayerData)
+        // GameManager.Instance.PlayerUpgrades.Save(ref _saveData.PlayerUpgradeData)
+
+        // Scene name save
+        saveData.lastSceneName = SceneManager.GetActiveScene().name;
     }
 
-    public void DeleteData(string name)
+    public static void Load(int slotIndex)
     {
-        PlayerPrefs.DeleteKey(name);
+        string saveFile = SaveFileName(slotIndex);
+
+        if (!File.Exists(saveFile))
+        {
+            return;
+        }
+
+        string json = File.ReadAllText(saveFile);
+
+        if (encryptData)
+        {
+            json = EncryptionUtility.DecryptString(json);
+        }
+
+        saveData = JsonUtility.FromJson<SaveData>(json);
+
+
+        HandleLoadData();
     }
 
-    public void DeleteAllData()
+    public static void HandleLoadData()
     {
-        PlayerPrefs.DeleteAll();
+        // GameManager.Instance.Player.Load(_saveData.PlayerData)
+        // GameManager.Instance.PlayerUpgrades.Load(_saveData.PlayerUpgradeData)
+
+        // Scene name load
+        if (!string.IsNullOrEmpty(saveData.lastSceneName))
+        {
+            SceneManager.LoadScene(saveData.lastSceneName);
+        }
+    }
+
+    public void SavePlayerPrefs()
+    {
+        PlayerPrefs.SetInt("preference-1", 1);
+    }
+
+    public void LoadPlayerPrefs()
+    {
+        int saveFileFound = PlayerPrefs.GetInt("preference-1", 0);
     }
 }
