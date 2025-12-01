@@ -7,6 +7,9 @@ public class GameManager : Singleton<GameManager>
     private Fading fading;
     private Coroutine sceneRoutine;
 
+    [Header("REFERENCES")]
+    private Transform playerTransform;
+
     protected override void Awake()
     {
         base.Awake();
@@ -57,5 +60,19 @@ public class GameManager : Singleton<GameManager>
 
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(sceneName);
+    }
+
+    // =====================================================
+    // References
+    // =====================================================
+
+    public void SetPlayerTransform(Transform transform)
+    {
+        playerTransform = transform;
+    }
+
+    public Transform GetPlayerTransform()
+    {
+        return playerTransform;
     }
 }

@@ -5,16 +5,13 @@ public class RotateTowards : MonoBehaviour
     [SerializeField] private float rotationSpeed = 90f;
     [SerializeField] private Transform target;
 
-
     private void Start()
     {
-        // GameObject targetObject = GameObject.FindGameObjectWithTag("Player");
-        // if (targetObject != null)
-        // {
-        //     target = targetObject.transform;
-        // }
+        if (target == null)
+        {
+            GameManager.Instance.GetPlayerTransform();
+        }
     }
-
 
     private void Update()
     {
@@ -25,7 +22,6 @@ public class RotateTowards : MonoBehaviour
 
         RotateTowardsTarget();
     }
-
 
     private void RotateTowardsTarget()
     {
