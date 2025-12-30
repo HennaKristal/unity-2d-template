@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : Singleton<InputManager>
 {
@@ -17,7 +18,15 @@ public class InputManager : Singleton<InputManager>
     protected override void Awake()
     {
         base.Awake();
+  
         playerInputActions = new PlayerInputActions();
+
+        string overrides = PlayerPrefs.GetString("remapped-hotkeys", "");
+        if (!string.IsNullOrEmpty(overrides))
+        {
+            playerInputActions.asset.LoadBindingOverridesFromJson(overrides);
+        }
+
         gameplayInputs = playerInputActions.Gameplay;
     }
 
