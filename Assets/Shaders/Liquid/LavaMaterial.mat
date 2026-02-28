@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7212647805617389973
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LavaMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: d6ae73b21a1d149b1ad593659b97ef29, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CausticHighlightTexture:
+        m_Texture: {fileID: 2800000, guid: 9cf31347d658e46e79a8dfe7a7e77fd1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CausticTexture:
+        m_Texture: {fileID: 2800000, guid: 4607143f1a8e3487fa2c113025470b25, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FoamTexture:
+        m_Texture: {fileID: 2800000, guid: 4607143f1a8e3487fa2c113025470b25, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 5af150238563e47a2807c289e029e539, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CausticFaderMultiplier: 0.2
+    - _CausticFaderScale: 0.17
+    - _CausticMovementAmount: 0.02
+    - _CausticMovementScale: 1.63
+    - _CausticScale: 0.07
+    - _CausticSpeed: 0.2
+    - _CausticSquashAmount: 1.68
+    - _CurrentWorldTextureScale: 0
+    - _EnableExternalAlpha: 0
+    - _FoamBlurAmount: 1
+    - _FoamScale: 1
+    - _Pixelization: 43
+    - _SpecularScale: 5
+    - _SpecularScale2: 9
+    - _SpecularSpeed: 0.3
+    - _SpecularThreshold: -0.52
+    - _ZWrite: 0
+    m_Colors:
+    - White: {r: 1, g: 1, b: 1, a: 1}
+    - _CausticColour: {r: 1, g: 0.24816974, b: 0, a: 0.3490196}
+    - _CausticHighlightColour: {r: 1, g: 0.21945243, b: 0.12549019, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CurrentWorldTexturePos: {r: 0, g: 0, b: 0, a: 0}
+    - _FoamColour: {r: 0.3647059, g: 0.17480144, b: 0.16470589, a: 1}
+    - _FoamTexelSize: {r: 0, g: 0, b: 0, a: 0}
+    - _MainColour: {r: 1, g: 0.44479144, b: 0, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColour: {r: 0.667925, g: 0.63506997, b: 0.3862626, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
