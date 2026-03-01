@@ -7,7 +7,20 @@ public class InputManager : Singleton<InputManager>
     private PlayerInputActions.GameplayActions gameplayInputs;
 
     public Vector2 Move { get; private set; }
-    public bool screenshotPress { get; private set; }
+    public bool JumpPress { get; private set; }
+    public bool JumpRelease { get; private set; }
+    public bool JumpHold { get; private set; }
+    public bool CrouchPress { get; private set; }
+    public bool CrouchRelease { get; private set; }
+    public bool CrouchHold { get; private set; }
+    public bool SprintPress { get; private set; }
+    public bool SprintRelease { get; private set; }
+    public bool SprintHold { get; private set; }
+    public bool InteractPress { get; private set; }
+    public bool InteractRelease { get; private set; }
+    public bool InteractHold { get; private set; }
+
+    public bool ScreenshotPress { get; private set; }
     public bool UIEnterPress { get; private set; }
     public bool UIEnterRelease { get; private set; }
     public bool UIEnterHold { get; private set; }
@@ -47,7 +60,7 @@ public class InputManager : Singleton<InputManager>
     {
         Move = gameplayInputs.Move.ReadValue<Vector2>();
 
-        screenshotPress = gameplayInputs.Screenshot.WasPressedThisFrame();
+        ScreenshotPress = gameplayInputs.Screenshot.WasPressedThisFrame();
 
         UIEnterPress = gameplayInputs.UIEnter.WasPressedThisFrame();
         UIEnterRelease = gameplayInputs.UIEnter.WasReleasedThisFrame();
