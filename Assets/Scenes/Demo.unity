@@ -10406,7 +10406,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <sprite=1> fwaf
+  m_text: <sprite=1>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a8e7af332c263bd4eaddddceb1eae149, type: 2}
   m_sharedMaterial: {fileID: 1367066848624020431, guid: a8e7af332c263bd4eaddddceb1eae149, type: 2}
@@ -11736,7 +11736,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <sprite=1>
+  m_text: <sprite=4>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a8e7af332c263bd4eaddddceb1eae149, type: 2}
   m_sharedMaterial: {fileID: 1367066848624020431, guid: a8e7af332c263bd4eaddddceb1eae149, type: 2}
