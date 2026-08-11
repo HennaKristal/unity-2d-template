@@ -63,11 +63,11 @@ MonoBehaviour:
     m_Scale: 2
     m_UnitsPerEM: 0
     m_LineHeight: 0
-    m_AscentLine: 80
+    m_AscentLine: 0
     m_CapLine: 0
     m_MeanLine: 0
-    m_Baseline: -30
-    m_DescentLine: 0
+    m_Baseline: -28
+    m_DescentLine: 38
     m_SuperscriptOffset: 0
     m_SuperscriptSize: 0
     m_SubscriptOffset: 0

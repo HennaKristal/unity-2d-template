@@ -3,6 +3,7 @@ using UnityEngine;
 public class DemoController : MonoBehaviour
 {
     [SerializeField] private GameObject demoButtons;
+    [SerializeField] private GameObject fontWindow;
     [SerializeField] private GameObject settingsWindow;
     [SerializeField] private GameObject RemapKeysWindow;
     [SerializeField] private AudioClip soundEffectClip;
@@ -22,6 +23,18 @@ public class DemoController : MonoBehaviour
     public void StopMusicClicked()
     {
         MusicManager.Instance.StopMusic(3f);
+    }
+
+    public void OpenFontsClicked()
+    {
+        demoButtons.SetActive(false);
+        fontWindow.SetActive(true);
+    }
+
+    public void CloseFontsClicked()
+    {
+        fontWindow.SetActive(false);
+        demoButtons.SetActive(true);
     }
 
     public void OpenSettingsClicked()

@@ -953,7 +953,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3129249542626620737}
-  - component: {fileID: 4902377932888000916}
+  - component: {fileID: 4040023289209710901}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -976,7 +976,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8773942806121629953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4902377932888000916
+--- !u!114 &4040023289209710901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -985,9 +985,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2605670489418328043}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ae0b4598280ff44388c3240af41d0c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f4f79723717e01c68cf90803758e9f6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputController
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
 --- !u!1 &2874263458658803664
 GameObject:
   m_ObjectHideFlags: 0
@@ -1375,6 +1375,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &3385669177926148280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9037524551277092911}
+  m_Layer: 0
+  m_Name: Custom Audio Sources
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9037524551277092911
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3385669177926148280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6087265904780487779}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3488014265799052338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1446,9 +1477,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f54853fd4a3924cb3bb0282eae77f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Screenshot
-  fileExtension: .png
-  detailMultiplier: 2
-  screenshotAudioClip: {fileID: 8300000, guid: a06b18fa78c6fd34c9e8228b5e7471ee, type: 3}
 --- !u!1 &3630775135107206040
 GameObject:
   m_ObjectHideFlags: 0
@@ -1870,6 +1898,7 @@ Transform:
   - {fileID: 7590471567906758861}
   - {fileID: 3105901213583358857}
   - {fileID: 5605433385248027575}
+  - {fileID: 9037524551277092911}
   m_Father: {fileID: 8773942806121629953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7046483319052104590
@@ -1879,7 +1908,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4868998593273668741}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfcb9c6b7654a384d90aaa72bedf448d, type: 3}
   m_Name: 
@@ -1888,6 +1917,7 @@ MonoBehaviour:
   SFXContainer: {fileID: 7590471567906758861}
   dialogueContainer: {fileID: 3105901213583358857}
   ambienceContainer: {fileID: 5605433385248027575}
+  customContainer: {fileID: 9037524551277092911}
   UIMixerGroup: {fileID: -7405878955680619439, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
   SFXMixerGroup: {fileID: 4030100643516294267, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
   dialogueMixerGroup: {fileID: 5638899915642102433, guid: 8428f57c6b4d7064fb6becc366c385f9, type: 2}
@@ -2289,12 +2319,12 @@ MonoBehaviour:
     textureArray:
     - {fileID: 2800000, guid: 456755878f4cf474685b6b0ca9504bf1, type: 3}
     animationFrameTime: 0
-    offset: {x: 8, y: 8}
+    offset: {x: 6, y: 4}
   - cursorType: 1
     textureArray:
-    - {fileID: 2800000, guid: e7a22f4a499b84842bc5b2dc4a1e021a, type: 3}
+    - {fileID: 2800000, guid: 916cbf482b3f33647972993a24c724d9, type: 3}
     animationFrameTime: 0
-    offset: {x: 8, y: 8}
+    offset: {x: 6, y: 6}
   - cursorType: 2
     textureArray:
     - {fileID: 2800000, guid: 0b9b03024e5398f418a787b98ab8f387, type: 3}
@@ -2306,7 +2336,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 86af4dc8d0f51854c9c286d6d04caf70, type: 3}
     - {fileID: 2800000, guid: 3b2ece0fcb613be48abf63f623e99a17, type: 3}
     animationFrameTime: 0.5
-    offset: {x: 32, y: 32}
+    offset: {x: 16, y: 16}
   defaultCursorType: 0
 --- !u!1 &6198872653466705797
 GameObject:
