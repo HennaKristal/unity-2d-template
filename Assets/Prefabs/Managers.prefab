@@ -1477,6 +1477,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f54853fd4a3924cb3bb0282eae77f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Screenshot
+  fileExtension: .png
+  detailMultiplier: 2
+  screenshotAudioClip: {fileID: 8300000, guid: a06b18fa78c6fd34c9e8228b5e7471ee, type: 3}
 --- !u!1 &3630775135107206040
 GameObject:
   m_ObjectHideFlags: 0

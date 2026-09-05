@@ -23,6 +23,9 @@ public class AudioController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI UIVolumeSliderText;
     [SerializeField] private TextMeshProUGUI dialogueVolumeSliderText;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip sliderChangeSound;
+
     private void Start()
     {
         LoadVolume("MusicVolume", musicVolumeSlider, musicVolumeSliderText);
@@ -52,7 +55,7 @@ public class AudioController : MonoBehaviour
 
     private void LoadVolume(string parameter, Slider slider, TextMeshProUGUI label)
     {
-        float value = PlayerPrefs.GetFloat(parameter, 0.8f);
+        float value = PlayerPrefs.GetFloat(parameter, 0.5f);
         slider.value = value;
         label.text = Mathf.Ceil(value * 100f).ToString() + "%";
         audioMixer.SetFloat(parameter, LinearToDecibel(value));
@@ -69,5 +72,29 @@ public class AudioController : MonoBehaviour
     private float LinearToDecibel(float value)
     {
         return Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+    }
+
+    public void PlayAmbientSliderChangeSound()
+    {
+        if (isInitializing) return;
+        AudioManager.Instance.PlayAmbienceSound(sliderChangeSound);
+    }
+
+    public void PlaySFXSliderChangeSound()
+    {
+        if (isInitializing) return;
+        AudioManager.Instance.PlaySFXSound(sliderChangeSound); 
+    }
+
+    public void PlayUISliderChangeSound()
+    {
+        if (isInitializing) return;
+        AudioManager.Instance.PlayUISound(sliderChangeSound);
+    }
+
+    public void PlayDialogueSliderChangeSound()
+    {
+        if (isInitializing) return;
+        AudioManager.Instance.PlayVoiceLine(sliderChangeSound);
     }
 }
